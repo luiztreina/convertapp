@@ -1,0 +1,42 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miles to Km Converter</title>
+</head>
+<body>
+  <h1>Miles to Kilometers Converter</h1>
+  <label for="miles">Enter miles: </label>
+  <input type="number" id="miles" placeholder="Miles">
+  <button onclick="convertMiles()">Convert</button>
+  
+  <p id="result"></p>
+
+  <script>
+    async function convertMiles() {
+      const miles = document.getElementById('miles').value;
+      if (!miles) {
+        alert('Please enter a number');
+        return;
+      }
+
+      const response = await fetch('/convert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ miles: parseFloat(miles) }),
+      });
+
+      const data = await response.json();
+      if (data.error) {
+        document.getElementById('result').innerText = data.error;
+      } else {
+        document.getElementById('result').innerText = `${data.miles} miles is equal to ${data.kilometers} kilometers.`;
+      }
+    }
+  </script>
+</body>
+</html>
